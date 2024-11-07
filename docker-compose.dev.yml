@@ -1,8 +1,6 @@
-version: '3.8'
-
 services:
   redis:
-    image: redis:latest
+    image: redis:7.4.1-alpine
     volumes:
       - redis-data:/data
       - ./redis.conf:/usr/local/etc/redis/redis.conf
