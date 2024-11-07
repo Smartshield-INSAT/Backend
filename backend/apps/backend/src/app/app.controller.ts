@@ -1,13 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Post, Body } from "@nestjs/common";
+import { AppService } from "./app.service";
+import { DeviceSpecsDto } from "./device-specs.dto";
 
-import { AppService } from './app.service';
-
-@Controller()
+@Controller("")
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getData() {
-    return this.appService.getData();
+  @Post("get-id")
+  async getId(@Body() body: DeviceSpecsDto): Promise<{ id: string }> {
+    return this.appService.handleGetId(body);
   }
 }

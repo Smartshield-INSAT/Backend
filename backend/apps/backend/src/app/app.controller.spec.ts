@@ -1,22 +1,47 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { Test, TestingModule } from "@nestjs/testing";
+import { AppController } from "./app.controller";
+import { AppService } from "./app.service";
+import { DeviceSpecsDto } from "./device-specs.dto";
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+describe("AppController", () => {
+  let controller: AppController;
+  let service: AppService;
 
-describe('AppController', () => {
-  let app: TestingModule;
-
-  beforeAll(async () => {
-    app = await Test.createTestingModule({
+  beforeEach(async () => {
+    const module: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService],
+      providers: [
+        {
+          provide: AppService,
+          useValue: {
+            handleGetId: jest.fn(),
+          },
+        },
+      ],
     }).compile();
+
+    controller = module.get<AppController>(AppController);
+    service = module.get<AppService>(AppService);
   });
 
-  describe('getData', () => {
-    it('should return "Hello API"', () => {
-      const appController = app.get<AppController>(AppController);
-      expect(appController.getData()).toEqual({ message: 'Hello API' });
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe("getId", () => {
+    it("should return id from service", async () => {
+      const body: DeviceSpecsDto = {
+        "mac-address": "00:1A:2B:3C:4D:5E",
+        "device-name": "Device XYZ",
+      };
+      const expectedResult = { id: "some-uuid" };
+
+      jest.spyOn(service, "handleGetId").mockResolvedValue(expectedResult);
+
+      const result = await controller.getId(body);
+
+      expect(service.handleGetId).toHaveBeenCalledWith(body);
+      expect(result).toEqual(expectedResult);
     });
   });
 });
