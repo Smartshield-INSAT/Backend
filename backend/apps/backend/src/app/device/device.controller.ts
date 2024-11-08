@@ -9,7 +9,7 @@ export class DeviceController {
 
     @Post()
     async createOrUpdateDevice(@Body() deviceSpecsDto: DeviceSpecsDto): Promise<{ id: string }> {
-        return this.deviceService.createOrUpdateDevice(deviceSpecsDto);
+        return await this.deviceService.createOrUpdateDevice(deviceSpecsDto);
     }
 
     @Get('/id/:id')

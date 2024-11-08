@@ -1,7 +1,7 @@
-import { Timestamp } from '../../app/common/base_class/timestamp.entity';
+import { Timestamp } from '../../common/base_class/timestamp.entity';
+import { Server } from '../../server/entity/server.entity';
 
 import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
-import { Server } from '../../server/entity/server.entity';
 
 export enum AnnotationEnum {
     SAFE = 'safe',
@@ -11,7 +11,7 @@ export enum AnnotationEnum {
 @Entity('data')
 export class Data extends Timestamp {
     @Index()
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('increment')
     id!: number;
 
     @Column('float', { nullable: false })

@@ -1,5 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 
+import { ServerService } from '../server/server.service';
+
 import { DeviceSpecsDto } from './device-specs.dto';
 
 import Redis from 'ioredis';
@@ -7,7 +9,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class DeviceService {
-    constructor(@Inject('REDIS_CLIENT') private readonly redisClient: Redis) {}
+    constructor(
+        @Inject('REDIS_CLIENT') private readonly redisClient: Redis,
+        private readonly serverService: ServerService,
+    ) {}
 
     async createOrUpdateDevice(deviceSpecsDto: DeviceSpecsDto) {
         const { macAddresses, ...deviceData } = deviceSpecsDto;
@@ -25,6 +30,7 @@ export class DeviceService {
             await this.redisClient.set(mac, uuid);
         }
         await this.redisClient.set(uuid, JSON.stringify({ ...deviceData, macAddresses }));
+        await this.serverService.createServer({ userUuid: uuid, ...deviceSpecsDto });
         return { id: uuid };
     }
 

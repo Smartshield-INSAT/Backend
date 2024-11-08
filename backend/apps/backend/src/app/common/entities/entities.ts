@@ -1,5 +1,7 @@
-import { EntitySchema, MixedList } from 'typeorm';
+import { Data } from '../../data/entity/data.entity';
+import { Server } from '../../server/entity/server.entity';
+import { User } from '../../user/entity/user.entity';
 
-const Entities = [] as MixedList<string | EntitySchema>;
+const Entities = [Data, Server, User];
 
 export { Entities };
