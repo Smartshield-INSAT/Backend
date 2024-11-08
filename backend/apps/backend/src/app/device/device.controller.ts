@@ -1,14 +1,24 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
 import { DeviceSpecsDto } from './device-specs.dto';
 import { DeviceService } from './device.service';
 
-@Controller('device')
+@Controller('devices')
 export class DeviceController {
     constructor(private readonly deviceService: DeviceService) {}
 
-    @Post('get-id')
-    async getId(@Body() body: DeviceSpecsDto): Promise<{ id: string }> {
-        return this.deviceService.handleGetId(body);
+    @Post()
+    async createOrUpdateDevice(@Body() deviceSpecsDto: DeviceSpecsDto): Promise<{ id: string }> {
+        return this.deviceService.createOrUpdateDevice(deviceSpecsDto);
+    }
+
+    @Get('/id/:id')
+    async getDeviceById(@Param('id') id: string) {
+        return this.deviceService.getDeviceById(id);
+    }
+
+    @Get('/mac/:macAddress')
+    async getDeviceByMacAddress(@Param('macAddress') macAddress: string) {
+        return this.deviceService.getDeviceByMacAddress(macAddress);
     }
 }

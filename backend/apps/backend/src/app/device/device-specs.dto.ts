@@ -1,10 +1,20 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { ArrayNotEmpty, IsArray, IsMACAddress, IsNotEmpty, IsString } from 'class-validator';
 
 export class DeviceSpecsDto {
     @IsString()
     @IsNotEmpty()
-    'mac-address': string;
+    os!: string;
 
-    // Allow any additional properties
-    [key: string]: unknown;
+    @IsString()
+    @IsNotEmpty()
+    arch!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    hostname!: string;
+
+    @IsArray()
+    @ArrayNotEmpty()
+    @IsMACAddress({ each: true })
+    macAddresses!: string[];
 }

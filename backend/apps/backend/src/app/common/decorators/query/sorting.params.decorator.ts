@@ -1,8 +1,8 @@
 import { BadRequestException, createParamDecorator, ExecutionContext } from '@nestjs/common';
 
+import { NestedKeys } from '../../utils/nested.keys.extractor';
 
 import { Request } from 'express';
-import { NestedKeys } from '../../utils/nested.keys.extractor';
 
 /**
  * Represents sorting criteria for query parameters.
