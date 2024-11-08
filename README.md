@@ -5,7 +5,6 @@
 ### Prerequisites
 
 - Ensure **Docker** and **Docker Compose** are installed.
-- Install **pnpm** globally if not already installed.
 
 ### Production Setup
 
@@ -25,7 +24,7 @@
 
 3. **Access the Application**
 
-   - The backend API is available at `http://localhost:3000`.
+   - The backend API is available at `http://localhost:8000`.
 
 ### Development Setup
 
@@ -37,19 +36,26 @@
 
    Fill in any necessary values in `.env.dev`.
 
-2. **Start Redis Container**
+2. **Start the Application**
 
    ```bash
-   docker-compose -f docker-compose.dev.yml up -d
+   docker-compose -f docker-compose.dev.yml up --build
    ```
 
-3. **Install Dependencies and Run NestJS Backend**
+3. **Access the Application**
 
-   ```bash
-   pnpm install
-   pnpm nx serve backend
-   ```
+   - The backend API is available at `http://localhost:8000`.
 
-4. **Access the Application**
+4. **Using the API**
 
-   - The backend API is available at `http://localhost:3000`.
+   - **Upload a pcap file** via POST request to `http://localhost:8000/upload_pcap/` using a tool like `curl` or Postman.
+
+     ```bash
+     curl -F "file=@your_pcap_file.pcap" http://localhost:8000/upload_pcap/
+     ```
+
+   - **Check Task Status** via GET request to `http://localhost:8000/task_status/{task_id}`.
+
+     ```bash
+     curl http://localhost:8000/task_status/your_task_id
+     ```

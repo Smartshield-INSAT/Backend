@@ -12,14 +12,43 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
     environment:
-      - NODE_ENV=production
+      INFLUXDB_URL: http://influxdb:8086
+      INFLUXDB_TOKEN: mytoken
+      INFLUXDB_ORG: myorg
+      INFLUXDB_BUCKET: mybucket
     depends_on:
       - redis
+      - influxdb
     ports:
-      - "3000:3000"
-    restart: always
+      - "8000:8000"
+
+  celery_worker:
+    build:
+      context: ./backend
+    environment:
+      INFLUXDB_URL: http://influxdb:8086
+      INFLUXDB_TOKEN: mytoken
+      INFLUXDB_ORG: myorg
+      INFLUXDB_BUCKET: mybucket
+    depends_on:
+      - redis
+      - influxdb
+    command: celery -A app.tasks worker --loglevel=info
+
+  influxdb:
+    image: influxdb:2.0
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+    environment:
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: password
+      DOCKER_INFLUXDB_INIT_ORG: myorg
+      DOCKER_INFLUXDB_INIT_BUCKET: mybucket
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: mytoken
 
 volumes:
   redis-data:
+  influxdb-data:
