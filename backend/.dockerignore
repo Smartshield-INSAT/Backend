@@ -1,0 +1,37 @@
+# Dependencies
+node_modules
+jspm_packages/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing
+coverage
+
+# Build directories
+dist
+
+# Environment variables
+.env.dev
+.env.prod
+.env.*.example
+
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Miscellaneous
+.DS_Store
+Thumbs.db
