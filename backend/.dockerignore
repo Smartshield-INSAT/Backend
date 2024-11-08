@@ -6,3 +6,4 @@ apps/frontend
 .git
 .gitignore
 README.md
+.env.*.*

@@ -1,23 +1,10 @@
-# Use the official Node.js image as the base image
-FROM node:18-alpine
-
-# Set the working directory inside the container
+FROM node:23.1-alpine
 WORKDIR /app
-
-# Copy package.json and pnpm-lock.yaml (if you are using pnpm) to install dependencies
+RUN npm install -g pnpm
+RUN npm install -g nx
 COPY /package.json /pnpm-lock.yaml ./
-
-# Install dependencies (adjust this depending on your package manager)
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
-
-# Copy the rest of the application files
+RUN pnpm install --prod --frozen-lockfile
 COPY ./ ./
-
-# Expose the port your app will run on
 EXPOSE 3000
-
-# Set the environment variable for production
 ENV NODE_ENV=production
-
-# Run the app
 CMD ["pnpm", "start"]
