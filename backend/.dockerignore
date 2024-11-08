@@ -1,8 +1,0 @@
-node_modules
-dist
-apps/frontend
-*.log
-.DS_Store
-.git
-.gitignore
-README.md

@@ -1,23 +1,24 @@
-# Use the official Node.js image as the base image
-FROM node:18-alpine
+# Stage 1: Build
+FROM node:23.1-alpine AS builder
 
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and pnpm-lock.yaml (if you are using pnpm) to install dependencies
-COPY /package.json /pnpm-lock.yaml ./
+RUN npm install -g pnpm
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+COPY . ./
+RUN pnpm run build
 
-# Install dependencies (adjust this depending on your package manager)
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
+# Stage 2: Production
+FROM node:23.1-alpine
 
-# Copy the rest of the application files
-COPY ./ ./
+WORKDIR /app
+RUN npm install -g pnpm
+COPY package.json pnpm-lock.yaml .env ./
+RUN pnpm install --prod --frozen-lockfile
+COPY --from=builder /app/dist ./dist
 
-# Expose the port your app will run on
 EXPOSE 3000
 
-# Set the environment variable for production
 ENV NODE_ENV=production
-
-# Run the app
-CMD ["pnpm", "start"]
+CMD ["pnpm", "start:prod"]

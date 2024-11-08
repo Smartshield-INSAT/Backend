@@ -8,7 +8,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2015",
+    "target": "es2016",
     "module": "esnext",
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
@@ -16,7 +16,19 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "paths": {}
+    "paths": {},
+    "incremental": true,
+    "strict": true,
+    "removeComments": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "strictBindCallApply": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "allowUnreachableCode": false,
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules", "tmp"],
+
 }
