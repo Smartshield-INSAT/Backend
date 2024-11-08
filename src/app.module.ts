@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Data } from './entities/data.entity';
 import { DataModule } from './data/data.module';
+import { Server } from './entities/server.entity';
+import { ServerModule } from './server/server.module';
 
 
 @Module({
@@ -17,11 +19,13 @@ import { DataModule } from './data/data.module';
       username: 'root', // Replace with your MySQL username if different
       password: '', // Add your MySQL password if you set one
       database: 'smart_shield', // Replace with the name of your database
-      entities: [User, Data], // Automatically load entities for simplicity
+      entities: [User, Data, Server], // Automatically load entities for simplicity
       synchronize: true, // Set to true for development only
 
     }),
     DataModule,
+    ServerModule,
+    
 
   ],
   controllers: [AppController],

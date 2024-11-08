@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
-import { User } from './user.entity';
+import { Server } from './server.entity';
 
 @Entity('data')
 export class Data {
@@ -78,9 +78,11 @@ export class Data {
   @Column('float', { name: 'Network_Activity_Rate' })
   networkActivityRate: number;
 
-  @ManyToOne(() => User, user => user.uuid, { eager: true })
-  @JoinColumn({ name: 'user_uuid' })
-  user: User;
+
+
+  @ManyToOne(() => Server, server => server.id, { eager: true })
+  @JoinColumn({ name: 'server_id' })
+  server_id: Server;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
