@@ -1,10 +1,8 @@
 node_modules
 dist
-tmp
+apps/frontend
+*.log
+.DS_Store
 .git
 .gitignore
-Dockerfile
-docker-compose.yml
-*.md
-.env.*.example
-.env
+README.md
