@@ -5,8 +5,10 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { DataLayerModule } from './common/data_layer/data.layer.module';
 import { Entities } from './common/entities/entities';
 import { DataModule } from './data/data.module';
+import { NamingModule } from './naming/naming.module';
 import { RedisModule } from './redis/redis.module';
 import { ServerModule } from './server/server.module';
+import { ThreatsModule } from './threat/threat.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -57,6 +59,8 @@ import { UserModule } from './user/user.module';
         ServerModule,
         UserModule,
         DataModule,
+        NamingModule,
+        ThreatsModule,
     ],
     controllers: [],
     providers: [],

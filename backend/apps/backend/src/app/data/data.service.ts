@@ -126,9 +126,9 @@ export class DataService extends BaseService<Data> {
     async countByServer(): Promise<{ serverId: string; count: number }[]> {
         const results = await this.repository
             .createQueryBuilder('data')
-            .select('data.server.id', 'serverId')
+            .select('data.server_id', 'serverId')
             .addSelect('COUNT(*)', 'count')
-            .groupBy('data.server.id')
+            .groupBy('data.server_id')
             .getRawMany();
 
         return results.map((result) => ({
@@ -157,9 +157,9 @@ export class DataService extends BaseService<Data> {
     async countByServerWithNames(): Promise<ServerCountResponse[]> {
         const baseQuery = await this.repository
             .createQueryBuilder('data')
-            .select('data.serverId', 'serverId')
+            .select('data.server_id', 'serverId')
             .addSelect('COUNT(*)', 'count')
-            .groupBy('data.serverId');
+            .groupBy('data.server_id');
 
         const counts = await baseQuery.getRawMany();
 
@@ -169,9 +169,9 @@ export class DataService extends BaseService<Data> {
     async getTop5ServersWithNames(): Promise<ServerCountResponse[]> {
         const baseQuery = await this.repository
             .createQueryBuilder('data')
-            .select('data.serverId', 'serverId')
+            .select('data.server_id', 'serverId')
             .addSelect('COUNT(*)', 'count')
-            .groupBy('data.serverId')
+            .groupBy('data.server_id')
             .orderBy('count', 'DESC')
             .limit(5);
 
@@ -185,10 +185,10 @@ export class DataService extends BaseService<Data> {
 
         const baseQuery = await this.repository
             .createQueryBuilder('data')
-            .select('data.serverId', 'serverId')
+            .select('data.server_id', 'serverId')
             .addSelect('COUNT(*)', 'count')
             .where('data.created_at >= :fiveMinutesAgo', { fiveMinutesAgo })
-            .groupBy('data.serverId');
+            .groupBy('data.server_id');
 
         const counts = await baseQuery.getRawMany();
 
@@ -200,10 +200,10 @@ export class DataService extends BaseService<Data> {
 
         const baseQuery = await this.repository
             .createQueryBuilder('data')
-            .select('data.serverId', 'serverId')
+            .select('data.server_id', 'serverId')
             .addSelect('COUNT(*)', 'count')
             .where('data.created_at >= :fiveMinutesAgo', { fiveMinutesAgo })
-            .groupBy('data.serverId')
+            .groupBy('data.server_id')
             .orderBy('count', 'DESC')
             .limit(5);
 
@@ -217,7 +217,6 @@ export class DataService extends BaseService<Data> {
     ): Promise<ServerCountResponse[]> {
         const enriched = await Promise.all(
             counts.map(async ({ serverId, count }) => {
-                // Get server information
                 const server = await firstValueFrom(
                     this.serverService.findOne({
                         where: { id: serverId },
@@ -342,10 +341,10 @@ export class DataService extends BaseService<Data> {
         const fiveMinutesAgo = getFiveMinutesAgo();
         const results = await this.repository
             .createQueryBuilder('data')
-            .select('data.server.id', 'serverId')
+            .select('data.server_id', 'serverId')
             .addSelect('COUNT(*)', 'count')
             .where('data.created_at > :date', { date: fiveMinutesAgo })
-            .groupBy('data.server.id')
+            .groupBy('data.server_id')
             .getRawMany();
 
         return results.map((result) => ({
@@ -376,10 +375,10 @@ export class DataService extends BaseService<Data> {
         const fiveMinutesAgo = getFiveMinutesAgo();
         const results = await this.repository
             .createQueryBuilder('data')
-            .select('data.server.id', 'serverId')
+            .select('data.server_id', 'serverId')
             .addSelect('COUNT(*)', 'count')
             .where('data.created_at > :date', { date: fiveMinutesAgo })
-            .groupBy('data.server.id')
+            .groupBy('data.server_id')
             .orderBy('count', 'DESC')
             .limit(5)
             .getRawMany();
