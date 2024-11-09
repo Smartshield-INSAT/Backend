@@ -35,11 +35,15 @@ import { UserModule } from './user/user.module';
                           password: config.get<string>('DB_PASSWORD'),
                           database: config.get<string>('DB_NAME'),
                       };
+
+                console.log(Entities);
+                console.log(connectionOptions);
+
                 return {
                     ...connectionOptions,
                     entities: Entities,
-                    synchronize: !isProduction, // never use True in production
-                    logging: !isProduction, // log all the queries
+                    synchronize: true,
+                    logging: true, // log all the queries
                     cache: isProduction
                         ? {
                               duration: 3_600_000, // Cache for 1 hour

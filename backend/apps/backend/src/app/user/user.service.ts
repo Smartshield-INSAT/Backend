@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { BaseService } from '../common/data_layer/base.service';
@@ -26,10 +26,10 @@ export class UserService extends BaseService<User> {
         return await firstValueFrom(this.findAll());
     }
 
-    async getUserByUuid(uuid: string): Promise<User> {
+    async getUserByUuid(uuid: string | undefined): Promise<User | null> {
         const user = await firstValueFrom(this.findOne({ where: { uuid } }));
         if (!user) {
-            throw new NotFoundException(`User with uuid ${uuid} not found`);
+            return null;
         }
         return user;
     }

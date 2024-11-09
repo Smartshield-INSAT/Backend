@@ -8,7 +8,9 @@ import { CreateServerDto } from './dto/create-server.dto';
 import { Server } from './entity/server.entity';
 
 import { firstValueFrom } from 'rxjs';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
+
+const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
 
 @Injectable()
 export class ServerService extends BaseService<Server> {
@@ -24,16 +26,19 @@ export class ServerService extends BaseService<Server> {
         const { userUuid, ...serverData } = createServerDto;
 
         const user = await this.userService.getUserByUuid(userUuid);
-        if (!user) {
-            throw new NotFoundException(`User with UUID ${userUuid} not found`);
-        }
-
-        return await firstValueFrom(
-            this.save({
-                ...serverData,
-                user,
-            }),
-        );
+        if (user)
+            return await firstValueFrom(
+                this.save({
+                    ...serverData,
+                    user,
+                }),
+            );
+        else
+            return await firstValueFrom(
+                this.save({
+                    ...serverData,
+                }),
+            );
     }
 
     async getAllServers(): Promise<Server[]> {
@@ -59,5 +64,11 @@ export class ServerService extends BaseService<Server> {
 
     async countServerEntries(): Promise<number> {
         return await this.repository.count();
+    }
+
+    async countServerEntriesLast5Min(): Promise<number> {
+        return this.repository.count({
+            where: { created_at: MoreThan(fiveMinutesAgo) },
+        });
     }
 }

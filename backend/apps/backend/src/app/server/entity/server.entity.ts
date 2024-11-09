@@ -2,12 +2,12 @@ import { Timestamp } from '../../common/base_class/timestamp.entity';
 import { User } from '../../user/entity/user.entity';
 
 import { ArrayNotEmpty, IsArray, IsMACAddress, IsNotEmpty, IsString, IsUUID } from 'class-validator';
-import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryColumn, Relation } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
 
 @Entity('server')
 export class Server extends Timestamp {
     @Index()
-    @PrimaryColumn('uuid')
+    @PrimaryGeneratedColumn('uuid')
     id!: string;
 
     @ManyToOne(() => User, undefined, { nullable: true, eager: true })

@@ -19,7 +19,7 @@ export class UserController {
     }
 
     @Get(':uuid')
-    async getUserByUuid(@Param('uuid') uuid: string): Promise<User> {
+    async getUserByUuid(@Param('uuid') uuid: string): Promise<User | null> {
         return this.userService.getUserByUuid(uuid);
     }
 }

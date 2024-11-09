@@ -8,7 +8,9 @@ import { CreateDataDto } from './dtos/create-data.dto';
 import { Data } from './entity/data.entity';
 
 import { firstValueFrom } from 'rxjs';
-import { Repository } from 'typeorm';
+import { MoreThan, Not, Repository } from 'typeorm';
+
+const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
 
 @Injectable()
 export class DataService extends BaseService<Data> {
@@ -124,19 +126,105 @@ export class DataService extends BaseService<Data> {
     }
 
     // Method to get the top 5 most frequent IPs
-  async getTop5IPs(): Promise<{ ip: string; count: number }[]> {
-    const results = await this.repository
-      .createQueryBuilder('data')
-      .select('data.ip', 'ip')
-      .addSelect('COUNT(*)', 'count')
-      .groupBy('data.ip')
-      .orderBy('count', 'DESC')
-      .limit(5)
-      .getRawMany();
+    async getTop5IPs(): Promise<{ ip: string; count: number }[]> {
+        const results = await this.repository
+            .createQueryBuilder('data')
+            .select('data.ip', 'ip')
+            .addSelect('COUNT(*)', 'count')
+            .groupBy('data.ip')
+            .orderBy('count', 'DESC')
+            .limit(5)
+            .getRawMany();
 
-    return results.map(result => ({
-      ip: result.ip,
-      count: parseInt(result.count, 10),
-    }));
-  }
+        return results.map((result) => ({
+            ip: result.ip,
+            count: parseInt(result.count, 10),
+        }));
+    }
+
+    // Count all Data entries created within the last 5 minutes
+    async countDataEntriesLast5Min(): Promise<number> {
+        return this.repository.count({
+            where: { created_at: MoreThan(fiveMinutesAgo) },
+        });
+    }
+
+    // Count all Server entries created within the last 5 minutes
+    async countServerEntriesLast5Min(): Promise<number> {
+        return this.serverService.countServerEntriesLast5Min();
+    }
+
+    // Count unique IP addresses in Data within the last 5 minutes
+    async countUniqueIPsLast5Min(): Promise<number> {
+        const uniqueIPs = await this.repository
+            .createQueryBuilder('data')
+            .select('data.ip')
+            .distinct(true)
+            .where('data.createdAt > :date', { date: fiveMinutesAgo })
+            .getCount();
+        return uniqueIPs;
+    }
+
+    // Count Data entries grouped by annotation within the last 5 minutes
+    async countByAnnotationLast5Min(): Promise<{ annotation: string; count: number }[]> {
+        return this.repository
+            .createQueryBuilder('data')
+            .select('data.annotation')
+            .addSelect('COUNT(data.annotation)', 'count')
+            .where('data.createdAt > :date', { date: fiveMinutesAgo })
+            .groupBy('data.annotation')
+            .getRawMany();
+    }
+
+    // Count Data entries grouped by ID within the last 5 minutes
+    async countByIdLast5Min(): Promise<{ id: number; count: number }[]> {
+        return this.repository
+            .createQueryBuilder('data')
+            .select('data.id')
+            .addSelect('COUNT(data.id)', 'count')
+            .where('data.createdAt > :date', { date: fiveMinutesAgo })
+            .groupBy('data.id')
+            .getRawMany();
+    }
+
+    // Count Data entries grouped by IP (top 5) within the last 5 minutes
+    async getTop5IPsLast5Min(): Promise<{ ip: string; count: number }[]> {
+        return this.repository
+            .createQueryBuilder('data')
+            .select('data.ip')
+            .addSelect('COUNT(data.ip)', 'count')
+            .where('data.createdAt > :date', { date: fiveMinutesAgo })
+            .groupBy('data.ip')
+            .orderBy('count', 'DESC')
+            .limit(5)
+            .getRawMany();
+    }
+
+    // Count Data entries grouped by server within the last 5 minutes
+    async countByServerLast5Min(): Promise<{ serverId: string; count: number }[]> {
+        return this.repository
+            .createQueryBuilder('data')
+            .select('data.serverId')
+            .addSelect('COUNT(data.serverId)', 'count')
+            .where('data.createdAt > :date', { date: fiveMinutesAgo })
+            .groupBy('data.serverId')
+            .getRawMany();
+    }
+
+    // Retrieve all threats (any entry with annotation not equal to "BENIGN")
+    async getAllThreats(): Promise<Data[]> {
+        return await this.repository.find({
+            where: { annotation: Not('BENIGN') },
+            order: { created_at: 'DESC' },
+        });
+    }
+
+    // Retrieve the 3 most recent threats (any entry with annotation not equal to "BENIGN")
+    async getRecentThreats(): Promise<Data[]> {
+        return await this.repository.find({
+            where: { annotation: Not('BENIGN') },
+            order: { created_at: 'DESC' },
+            take: 3,
+        });
+    }
 }

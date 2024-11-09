@@ -30,7 +30,7 @@ export class DeviceService {
             await this.redisClient.set(mac, uuid);
         }
         await this.redisClient.set(uuid, JSON.stringify({ ...deviceData, macAddresses }));
-        await this.serverService.createServer({ userUuid: uuid, ...deviceSpecsDto });
+        await this.serverService.createServer({ id: uuid, userUuid: undefined, ...deviceSpecsDto });
         return { id: uuid };
     }
 

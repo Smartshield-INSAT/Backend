@@ -1,9 +1,21 @@
-import { ArrayNotEmpty, IsArray, IsMACAddress, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import {
+    ArrayNotEmpty,
+    IsArray,
+    IsMACAddress,
+    IsNotEmpty,
+    IsOptional,
+    IsString,
+    IsUUID,
+} from 'class-validator';
 
 export class CreateServerDto {
     @IsUUID()
+    @IsOptional()
+    id!: string;
+
+    @IsUUID()
     @IsNotEmpty()
-    userUuid!: string;
+    userUuid!: string | undefined;
 
     @IsString()
     @IsNotEmpty()
