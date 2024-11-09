@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { Naming } from '../naming/entity/naming.entity';
+import { NamingService } from '../naming/naming.service';
 import { Server } from '../server/entity/server.entity';
 import { ServerService } from '../server/server.service';
 import { User } from '../user/entity/user.entity';
@@ -11,8 +13,8 @@ import { DataService } from './data.service';
 import { Data } from './entity/data.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Data, Server, User])],
+    imports: [TypeOrmModule.forFeature([Data, Server, User, Naming])],
     controllers: [DataController],
-    providers: [DataService, ServerService, UserService],
+    providers: [DataService, ServerService, UserService, NamingService],
 })
 export class DataModule {}

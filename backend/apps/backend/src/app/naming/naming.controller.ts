@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 
-import { NamingService } from './naming.service';
 import { CreateNamingDto } from './dto/create-naming.dto';
+import { NamingService } from './naming.service';
 
 @Controller('naming')
 export class NamingController {

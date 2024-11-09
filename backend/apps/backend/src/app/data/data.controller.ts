@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
-import { DataService } from './data.service';
+import { DataService, ServerCountResponse } from './data.service';
 import { CreateDataDto } from './dtos/create-data.dto';
 import { Data } from './entity/data.entity';
 
@@ -18,60 +18,49 @@ export class DataController {
         return this.dataService.getAllData();
     }
 
-    // Endpoint to get the count of all Data entries
+    // Base count endpoints
     @Get('count')
     async getDataCount(): Promise<number> {
         return await this.dataService.countDataEntries();
     }
 
-    // Endpoint to get the count of all Server entries
     @Get('servers/count')
     async getServerCount(): Promise<number> {
         return await this.dataService.countServerEntries();
     }
 
-    // Endpoint to get the count of unique IP addresses in Data
     @Get('unique-ips/count')
     async getUniqueIpCount(): Promise<number> {
         return await this.dataService.countUniqueIPs();
     }
 
-    // Endpoint to get count of Data entries grouped by annotation
     @Get('count-by-annotation')
     async getCountByAnnotation(): Promise<{ annotation: string; count: number }[]> {
         return await this.dataService.countByAnnotation();
     }
 
-    // Endpoint to get count of Data entries grouped by ID
     @Get('count-by-id')
     async getCountById(): Promise<{ id: number; count: number }[]> {
         return await this.dataService.countById();
     }
 
-    // Endpoint to get count of Data entries grouped by ID
     @Get('count-by-ip-top-5')
     async getCountByIpTop5(): Promise<{ ip: string; count: number }[]> {
         return await this.dataService.getTop5IPs();
     }
 
-    // Endpoint to get count of Data entries grouped by server
-    @Get('count-by-server')
-    async getCountByServer(): Promise<{ serverId: string; count: number }[]> {
-        return await this.dataService.countByServer();
-    }
-
-    // Endpoint to retrieve all threats
+    // Threat endpoints
     @Get('threats')
     async getAllThreats(): Promise<Data[]> {
         return await this.dataService.getAllThreats();
     }
 
-    // Endpoint to retrieve the 3 most recent threats
     @Get('threats/recent')
     async getRecentThreats(): Promise<Data[]> {
         return await this.dataService.getRecentThreats();
     }
 
+    // Last 5 minutes endpoints
     @Get('count/last-5-min')
     async getDataCountLast5Min(): Promise<number> {
         return await this.dataService.countDataEntriesLast5Min();
@@ -102,11 +91,37 @@ export class DataController {
         return await this.dataService.getTop5IPsLast5Min();
     }
 
-    @Get('count-by-server/last-5-min')
-    async getCountByServerLast5Min(): Promise<{ serverId: string; count: number }[]> {
-        return await this.dataService.countByServerLast5Min();
+    @Get('threats/last-5-min')
+    async getAllThreatsLast5Min(): Promise<Data[]> {
+        return await this.dataService.getAllThreatsLast5Min();
     }
 
+    @Get('threats/recent/last-5-min')
+    async getRecentThreatsLast5Min(): Promise<Data[]> {
+        return await this.dataService.getRecentThreatsLast5Min();
+    }
+
+    @Get('count-by-server')
+    async getCountByServer(): Promise<ServerCountResponse[]> {
+        return await this.dataService.countByServerWithNames();
+    }
+
+    @Get('count-by-server-top-5')
+    async getCountByServerTop5(): Promise<ServerCountResponse[]> {
+        return await this.dataService.getTop5ServersWithNames();
+    }
+
+    @Get('count-by-server/last-5-min')
+    async getCountByServerLast5Min(): Promise<ServerCountResponse[]> {
+        return await this.dataService.countByServerWithNamesLast5Min();
+    }
+
+    @Get('count-by-server-top-5/last-5-min')
+    async getCountByServerTop5Last5Min(): Promise<ServerCountResponse[]> {
+        return await this.dataService.getTop5ServersWithNamesLast5Min();
+    }
+
+    // Individual record endpoints
     @Get('id/:id')
     async getDataById(@Param('id') id: number): Promise<Data> {
         return this.dataService.getDataById(id);

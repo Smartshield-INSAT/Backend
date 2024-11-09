@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { BaseService } from '../common/data_layer/base.service';
+import { Server } from '../server/entity/server.entity';
 
 import { CreateNamingDto } from './dto/create-naming.dto';
 import { Naming } from './entity/naming.entity';
 
 import { Repository } from 'typeorm';
-import { Server } from '../server/entity/server.entity';
 
 @Injectable()
 export class NamingService extends BaseService<Naming> {
@@ -24,8 +24,9 @@ export class NamingService extends BaseService<Naming> {
     }
 
     async enrichServerWithNaming(server: Server): Promise<{ hostname: string; name?: string }> {
-      const namingEntry = await this.repository.findOne({ where: { ip: server.hostname } });
-      return namingEntry ? { hostname: server.hostname, name: namingEntry.name } : { hostname: server.hostname };
-  }
-
+        const namingEntry = await this.repository.findOne({ where: { ip: server.hostname } });
+        return namingEntry
+            ? { hostname: server.hostname, name: namingEntry.name }
+            : { hostname: server.hostname };
+    }
 }
