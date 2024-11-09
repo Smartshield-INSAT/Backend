@@ -1,11 +1,9 @@
-
 import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
 
 export class CreateDataDto {
     @IsNumber()
     @IsNotEmpty()
     dur!: number;
-
 
     @IsString()
     @IsNotEmpty()

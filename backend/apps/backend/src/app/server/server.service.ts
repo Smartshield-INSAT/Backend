@@ -56,4 +56,8 @@ export class ServerService extends BaseService<Server> {
 
         return this.repository.find({ where: { user } });
     }
+
+    async countServerEntries(): Promise<number> {
+        return await this.repository.count();
+    }
 }
