@@ -4,7 +4,10 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 import { DataLayerModule } from './common/data_layer/data.layer.module';
 import { Entities } from './common/entities/entities';
+import { DataModule } from './data/data.module';
 import { RedisModule } from './redis/redis.module';
+import { ServerModule } from './server/server.module';
+import { UserModule } from './user/user.module';
 
 @Module({
     imports: [
@@ -32,8 +35,6 @@ import { RedisModule } from './redis/redis.module';
                           password: config.get<string>('DB_PASSWORD'),
                           database: config.get<string>('DB_NAME'),
                       };
-                console.log(connectionOptions);
-
                 return {
                     ...connectionOptions,
                     entities: Entities,
@@ -49,6 +50,9 @@ import { RedisModule } from './redis/redis.module';
         }),
         RedisModule,
         DataLayerModule,
+        ServerModule,
+        UserModule,
+        DataModule,
     ],
     controllers: [],
     providers: [],

@@ -1,11 +1,15 @@
-import { AnnotationEnum } from '../entity/data.entity';
 
-import { IsEnum, IsNotEmpty, IsNumber, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
 
 export class CreateDataDto {
     @IsNumber()
     @IsNotEmpty()
     dur!: number;
+
+
+    @IsString()
+    @IsNotEmpty()
+    ip!: string;
 
     @IsNotEmpty()
     proto!: string;
@@ -96,8 +100,9 @@ export class CreateDataDto {
     @IsNotEmpty()
     networkActivityRate!: number;
 
-    @IsEnum(AnnotationEnum)
-    annotation!: AnnotationEnum;
+    @IsString()
+    @IsNotEmpty()
+    annotation!: string;
 
     @IsUUID()
     @IsNotEmpty()

@@ -8,10 +8,11 @@ import { User } from '../user/entity/user.entity';
 import { DataController } from './data.controller';
 import { DataService } from './data.service';
 import { Data } from './entity/data.entity';
+import { UserService } from '../user/user.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Data, Server, User])],
     controllers: [DataController],
-    providers: [DataService, ServerService],
+    providers: [DataService, ServerService,UserService],
 })
 export class DataModule {}

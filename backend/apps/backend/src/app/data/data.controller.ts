@@ -18,6 +18,11 @@ export class DataController {
         return this.dataService.getAllData();
     }
 
+    @Get('ip/:ip')
+    async getAllDataForIP(@Param('ip') ip: string): Promise<Data[]> {
+        return this.dataService.getAllDataForIP(ip);
+    }
+
     @Get(':id')
     async getDataById(@Param('id') id: number): Promise<Data> {
         return this.dataService.getDataById(id);

@@ -3,16 +3,14 @@ import { Server } from '../../server/entity/server.entity';
 
 import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Relation } from 'typeorm';
 
-export enum AnnotationEnum {
-    SAFE = 'safe',
-    THREAT = 'threat',
-}
-
 @Entity('data')
 export class Data extends Timestamp {
     @Index()
     @PrimaryGeneratedColumn('increment')
     id!: number;
+
+    @Column({ nullable: false })
+    ip!: string;
 
     @Column('float', { nullable: false })
     dur!: number;
@@ -86,13 +84,8 @@ export class Data extends Timestamp {
     @Column('float', { name: 'Network_Activity_Rate', nullable: false })
     networkActivityRate!: number;
 
-    @Column({
-        type: 'enum',
-        enum: AnnotationEnum,
-        default: AnnotationEnum.SAFE,
-        nullable: false,
-    })
-    annotation!: AnnotationEnum;
+    @Column({ nullable: false })
+    annotation!: string;
 
     @ManyToOne(() => Server, (server) => server.id, { nullable: false, eager: true })
     @JoinColumn({ name: 'server_id', foreignKeyConstraintName: 'FK_SERVER' })

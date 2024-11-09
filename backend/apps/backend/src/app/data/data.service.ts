@@ -50,4 +50,11 @@ export class DataService extends BaseService<Data> {
         }
         return dataEntry;
     }
+    async getAllDataForIP(ip: string): Promise<Data[]> {
+      const dataEntry = await firstValueFrom(this.findAll({ where: { ip } }));
+      if (!dataEntry) {
+          throw new NotFoundException(`Data with ID ${ip} not found`);
+      }
+      return dataEntry;
+  }
 }
