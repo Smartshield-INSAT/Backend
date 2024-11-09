@@ -5,7 +5,6 @@ import { BaseService } from '../common/data_layer/base.service';
 
 import { CreateThreatDto } from './create-threat.dto';
 import { Threat } from './threat.entity';
-import { ThreatsGateway } from './threat.gateway';
 
 import { Repository } from 'typeorm';
 
@@ -14,7 +13,6 @@ export class ThreatsService extends BaseService<Threat> {
     constructor(
         @InjectRepository(Threat)
         threatsRepository: Repository<Threat>,
-        private readonly threatsGateway: ThreatsGateway,
     ) {
         super(threatsRepository);
     }
@@ -22,8 +20,6 @@ export class ThreatsService extends BaseService<Threat> {
     async createThreat(createThreatDto: CreateThreatDto): Promise<Threat> {
         const threat = this.repository.create(createThreatDto);
         await this.repository.save(threat);
-
-        this.threatsGateway.emitThreatCreated(threat);
         return threat;
     }
 

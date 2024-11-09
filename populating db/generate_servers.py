@@ -50,7 +50,7 @@ for _ in range(200):
         "hostname": generate_random_hostname(),
         "os": choose_random_os(),
         "arch": choose_random_arch(),
-        "macAddresses": generate_random_mac_addresses(count=4)  # Generate 4 MAC addresses per server
+        "macAddresses": generate_random_mac_addresses(count=random.randint(1, 10))
     }
     # Send POST request
     response = requests.post(url, json=data)

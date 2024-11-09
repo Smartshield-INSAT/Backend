@@ -1,6 +1,7 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app/app.module';
 
@@ -19,6 +20,17 @@ async function bootstrap() {
             transform: true,
         }),
     );
+
+    const configuration = new DocumentBuilder()
+        .setTitle('Smartshield')
+        .setDescription('Smartshield API')
+        .setVersion('1.0')
+        .addTag('api')
+        .build();
+
+    const document = SwaggerModule.createDocument(app, configuration);
+
+    SwaggerModule.setup('api', app, document);
 
     // for basic security
     app.use(helmet());
