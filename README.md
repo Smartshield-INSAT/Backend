@@ -5,7 +5,7 @@
 ### Prerequisites
 
 - Ensure **Docker** and **Docker Compose** are installed.
-- Install **pnpm** globally if not already installed.
+- Install **pnpm** globally if not already installed ( for Dev Only ).
 
 ### Production Setup
 
@@ -25,7 +25,7 @@
 
 3. **Access the Application**
 
-   - The backend API is available at `http://localhost:3000`.
+   - The backend API is available at `http://localhost:3000/api`.
 
 ### Development Setup
 
@@ -37,7 +37,7 @@
 
    Fill in any necessary values in `.env.dev`.
 
-2. **Start Redis Container**
+2. **Build and Run Containers**
 
    ```bash
    docker-compose -f docker-compose.dev.yml up -d
@@ -52,4 +52,4 @@
 
 4. **Access the Application**
 
-   - The backend API is available at `http://localhost:3000`.
+   - The backend API is available at `http://localhost:3000/api`.

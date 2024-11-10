@@ -4,7 +4,7 @@ import uuid
 
 
 # Constant user UUID
-user_uuid = "ff40f63d-bcd1-41f5-8ad0-c51f92390846"
+user_uuid = "cf2ab578-bf33-47bb-98c2-1cfff6df3a4b"
 
 
 # Define the server URL
@@ -47,7 +47,7 @@ def generate_random_mac_addresses(count=1):
 ids = []
 
 # Generate and send random server data
-for _ in range(10):
+for _ in range(9):
     data = {
         "userUuid": user_uuid,  # Constant user UUID
         "hostname": generate_random_hostname(),
@@ -68,6 +68,26 @@ for _ in range(10):
         print(f"Failed to send data: {data}")
         print(f"Response Code: {response.status_code}, Message: {response.text}")
 
+for _ in range(1):
+    data = {
+        "userUuid": user_uuid,  # Constant user UUID
+        "hostname": "archlinux",
+        "os": "linux",
+        "arch": "amd64",
+        "macAddresses": generate_random_mac_addresses(count=random.randint(1, 10))
+    }
+    # Send POST request
+    response = requests.post(url, json=data)
+    
+    
+    # Print the response status for each row
+    if response.ok:
+        response = response.json()
+        ids.append(response['id'])
+        print(f"Successfully sent data: {data}")
+    else:
+        print(f"Failed to send data: {data}")
+        print(f"Response Code: {response.status_code}, Message: {response.text}")
 # Print the result
 print("============================================================================================")
 print("============================GENERATED_SERVERS===============================================")

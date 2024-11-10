@@ -2,27 +2,45 @@ import csv
 import requests
 import random
 import time
+import math
 
 # Define the server URL
 # url = "http://192.168.100.92:3000/api/data"
 url = "http://localhost:3000/api/data"
 
-servers = ['84339aa2-d58f-4797-96ad-4beca64fe806', '94480cfd-2055-4d66-ba32-0e2a9efe7c43', 'e77dd3e5-7544-4997-8dd4-b540c0b643f1', '08632ad0-1f63-41a6-b4f4-60e3d53c0124', '5d9b7054-d86e-4f26-a0b7-f6636f35de69', '45ccea8e-d6c1-4b5c-bd40-2089ecd12386', 'a4772d3d-fe7f-40a9-94ff-78af454cfc7c', '01400a3f-933f-44e0-ae22-13f5d687e1df', 'c05d06c7-7478-4e70-b6e2-5e58596914f8', '18f14276-1c0a-46e9-b7e6-d54f4779eca5']
+servers = ['5b5603c8-e1c2-4389-a350-9bba60dca0a5', 'f68b76d4-b5b1-447d-8f8e-8efbc55ba0e4', '6b9dedc8-3ee8-48f6-b00d-ffe3c9b39cce', '36b4c5f0-077c-4c14-b5a4-c1bfd78d6dbe', '56c3e502-20e3-4bcb-95b4-feb710f49efa', '5c61e92f-b996-4586-903e-2c98ea7ad04f', 'c3a68a6b-28b9-47bb-b482-ebfc8aad8d64', 'f31f79b3-6d2b-4b32-ba2a-713f20a6bab4', '4ec10a7a-d818-48fb-b294-59e8ab331ea2', 'eb5cab6a-71b0-4e94-9fde-7a7536f541dc']
+random.seed(random.random())
+ 
+
+def gaussian_choice(items, mu=None, sigma=1.0):
+    """
+    Select an item from a list using weights based on a Gaussian distribution.
+    
+    Parameters:
+    items (list): List of items to choose from
+    mu (float): Mean position (defaults to center of list)
+    sigma (float): Standard deviation in positions
+    
+    Returns:
+    item: Selected item from the list
+    """
+    if not items:
+        raise ValueError("Items list cannot be empty")
+    
+    if mu is None:
+        mu = (len(items) - 1) / 2
+    
+    weights = []
+    for i in range(len(items)):
+        weight = math.exp(-((i - mu) ** 2) / (2 * sigma ** 2))
+        weights.append(weight)
+    
+    total = sum(weights)
+    weights = [w/total for w in weights]    
+    return random.choices(items, weights=weights, k=1)[0]
 
 def generate_random_sever():
-    r = random.random()
-    if  r < 0.02:
-        return servers[-1]
-    if  r < 0.12:
-        return servers[-2]
-    if  r < 0.50:
-        return servers[0]
-    if r < 0.8:
-        return servers[1]
-    if r < 0.9:
-        return servers[2]
-    
-    return random.choice(servers[3:-3:])
+    return gaussian_choice(servers, sigma=random.uniform(0.5, 3.0))
 
 def generate_random_ip():
     """Generate a random IP across multiple private IP ranges."""
@@ -30,27 +48,32 @@ def generate_random_ip():
     
     if ip_type == '192':
         # 192.168.x.x range
-        return f"192.168.{random.randint(130, 200)}.{random.randint(70, 130)}"
+        return f"192.168.{random.randint(130, 170)}.{random.randint(70, 100)}"
     else:
         # 172.16.x.x to 172.31.x.x range
-        return f"172.{random.randint(16, 31)}.{random.randint(100, 200)}.{random.randint(100, 200)}"
+        return f"172.{random.randint(16, 31)}.{random.randint(100, 130)}.{random.randint(160, 200)}"
 
 def random_annotation():
-    
+    threats = ["BENIGN", "Exploits", "Generic", "Fuzzers", "DoS", "Reconnaissance"]
     r = random.random()
-    if  r < 0.70:
-        return "BENIGN"
-    if  r < 0.82:
-        return "Generic"
-    if  r < 0.9:
-        return "Exploits"
-    if  r < 0.97:
-        return "Fuzzers"
     
-    threats = [
-        "Exploits", "Generic", "Fuzzers", "DoS", "Reconnaissance" 
-    ]
-    return random.choice(threats)
+    # 70% chance for BENIGN
+    if r < 0.7:
+        return "BENIGN"
+        
+    # 30% for others
+    r = random.random()  # New random number for remaining 30%
+    
+    if r < 0.42:
+        return "Exploits"
+    elif r < 0.70:  # 0.42 + 0.28
+        return "Fuzzers"
+    elif r < 0.83:  # 0.70 + 0.13
+        return "DoS"
+    elif r < 0.92:  # 0.83 + 0.09
+        return "Generic"
+    else:
+        return "Reconnaissance"
 
 i = 0
 # Read CSV, format each row to JSON, and send as POST request
@@ -61,8 +84,8 @@ with open("data.csv", mode="r") as file:
         row["ip"] = generate_random_ip()
         
         i += 1
-        if( i % 200 == 0):
-            time.sleep(60)
+        if( i % 20 == 0):
+            time.sleep(random.randint(2, 10))
         
         # Format each row according to the available fields in the CSV, adding default values for missing fields
         data = {
