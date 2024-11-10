@@ -49,8 +49,16 @@ services:
     ports:
       - "3000:3000"
     restart: always
+    networks:
+      rabbitmq_net:
 
 volumes:
   redis-data:
   pgadmin-data:
   db-data:
+
+networks:
+  rabbitmq_net:
+    name: rabbitmq_net
+    driver: bridge
+    external: true
