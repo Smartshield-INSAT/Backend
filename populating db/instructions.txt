@@ -1,0 +1,16 @@
+Populate instructions:
+
+1. create user:
+    "name": "Mario"
+    "email": "meme@gmail.com"
+2. take the uuid from the response.
+3. in generate_servers.py:
+    3a. change the value of user_uuid to the value uuid received from the previous response
+    3b. run the script
+    3c. copy the last array sent by the script
+4. in generate_data.py:
+    4a. paste the received array by the last script on the servers object
+    4b. run the script ( as many as you want!!!)
+
+
+VOILA

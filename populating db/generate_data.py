@@ -5,8 +5,11 @@ import random
 # Define the server URL
 url = "http://192.168.100.92:3000/api/data"
 
+servers = ['c7d79d06-45ab-4187-9a9f-d323b2101e4f', '215140be-85eb-4b41-810c-d587283b6d48', '139aeb07-7864-4606-abf7-9b3cdefb3561', '7d79cb60-8ac4-490a-b7cd-f21a23df3ffc', '30e0e707-a014-4554-b37b-5b138c946124', '9c2d147f-9f7d-40a4-82b0-e7713e114496', 'a8c56f0a-96da-48f1-8d31-df8a32756bdc', '2a7323cb-f893-498e-ac0e-842f61a8a556', '6cba3822-a2f9-4384-bdfb-7687796e32d4', '19815580-f1a9-4e71-9f40-601199eaf598']
+
+
 def generate_random_sever():
-    return random.choice(['c7d79d06-45ab-4187-9a9f-d323b2101e4f', '215140be-85eb-4b41-810c-d587283b6d48', '139aeb07-7864-4606-abf7-9b3cdefb3561', '7d79cb60-8ac4-490a-b7cd-f21a23df3ffc', '30e0e707-a014-4554-b37b-5b138c946124', '9c2d147f-9f7d-40a4-82b0-e7713e114496', 'a8c56f0a-96da-48f1-8d31-df8a32756bdc', '2a7323cb-f893-498e-ac0e-842f61a8a556', '6cba3822-a2f9-4384-bdfb-7687796e32d4', '19815580-f1a9-4e71-9f40-601199eaf598'])
+    return random.choice(servers)
 
 def generate_random_ip():
     """Generate a random IP across multiple private IP ranges."""
