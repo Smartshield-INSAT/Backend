@@ -1,67 +1,68 @@
 import csv
 import requests
 import random
+import time
 
 # Define the server URL
-url = "http://192.168.100.92:3000/api/data"
+# url = "http://192.168.100.92:3000/api/data"
+url = "http://localhost:3000/api/data"
 
-servers = ['c7d79d06-45ab-4187-9a9f-d323b2101e4f', '215140be-85eb-4b41-810c-d587283b6d48', '139aeb07-7864-4606-abf7-9b3cdefb3561', '7d79cb60-8ac4-490a-b7cd-f21a23df3ffc', '30e0e707-a014-4554-b37b-5b138c946124', '9c2d147f-9f7d-40a4-82b0-e7713e114496', 'a8c56f0a-96da-48f1-8d31-df8a32756bdc', '2a7323cb-f893-498e-ac0e-842f61a8a556', '6cba3822-a2f9-4384-bdfb-7687796e32d4', '19815580-f1a9-4e71-9f40-601199eaf598']
-
+servers = ['84339aa2-d58f-4797-96ad-4beca64fe806', '94480cfd-2055-4d66-ba32-0e2a9efe7c43', 'e77dd3e5-7544-4997-8dd4-b540c0b643f1', '08632ad0-1f63-41a6-b4f4-60e3d53c0124', '5d9b7054-d86e-4f26-a0b7-f6636f35de69', '45ccea8e-d6c1-4b5c-bd40-2089ecd12386', 'a4772d3d-fe7f-40a9-94ff-78af454cfc7c', '01400a3f-933f-44e0-ae22-13f5d687e1df', 'c05d06c7-7478-4e70-b6e2-5e58596914f8', '18f14276-1c0a-46e9-b7e6-d54f4779eca5']
 
 def generate_random_sever():
-    return random.choice(servers)
+    r = random.random()
+    if  r < 0.02:
+        return servers[-1]
+    if  r < 0.12:
+        return servers[-2]
+    if  r < 0.50:
+        return servers[0]
+    if r < 0.8:
+        return servers[1]
+    if r < 0.9:
+        return servers[2]
+    
+    return random.choice(servers[3:-3:])
 
 def generate_random_ip():
     """Generate a random IP across multiple private IP ranges."""
-    ip_type = random.choice(['192', '10', '172'])
+    ip_type = random.choice(['192', '172'])
     
     if ip_type == '192':
         # 192.168.x.x range
-        return f"192.168.{random.randint(0, 255)}.{random.randint(1, 254)}"
-    elif ip_type == '10':
-        # 10.x.x.x range
-        return f"10.{random.randint(0, 255)}.{random.randint(0, 255)}.{random.randint(1, 254)}"
+        return f"192.168.{random.randint(130, 200)}.{random.randint(70, 130)}"
     else:
         # 172.16.x.x to 172.31.x.x range
-        return f"172.{random.randint(16, 31)}.{random.randint(0, 255)}.{random.randint(1, 254)}"
+        return f"172.{random.randint(16, 31)}.{random.randint(100, 200)}.{random.randint(100, 200)}"
 
 def random_annotation():
     
-    
-    if random.random() < 0.70:
+    r = random.random()
+    if  r < 0.70:
         return "BENIGN"
-    
-    if random.random() < 0.80:
-        return "malware"
-    
-    if random.random() < 0.92:
-        return "SQL injection"
-    if random.random() < 0.98:
-        return "XSS injection"
+    if  r < 0.82:
+        return "Generic"
+    if  r < 0.9:
+        return "Exploits"
+    if  r < 0.97:
+        return "Fuzzers"
     
     threats = [
-        "DoS attack",
-        "phishing attempt",
-        "malware",
-        "port scanning",
-        "SQL injection",
-        "XSS attack",
-        "brute force attack",
-        "DDoS attack",
-        "MITM attack",
-        "fuzzing",
-        "XML injection",
-        "HTML injection"
+        "Exploits", "Generic", "Fuzzers", "DoS", "Reconnaissance" 
     ]
     return random.choice(threats)
 
+i = 0
 # Read CSV, format each row to JSON, and send as POST request
 with open("data.csv", mode="r") as file:
     csv_reader = csv.DictReader(file)
-    
     for row in csv_reader:
         # Randomize the IP
         row["ip"] = generate_random_ip()
+        
+        i += 1
+        if( i % 200 == 0):
+            time.sleep(60)
         
         # Format each row according to the available fields in the CSV, adding default values for missing fields
         data = {

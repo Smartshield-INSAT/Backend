@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody, ApiProperty } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBody } from '@nestjs/swagger';
 import { DataService, ServerCountResponse } from './data.service';
 import { CreateDataDto } from './dtos/create-data.dto';
 import { Data } from './entity/data.entity';
@@ -163,14 +163,14 @@ export class DataController {
 
     @Get('count-by-server')
     @ApiOperation({ summary: 'Get count by server with names' })
-    @ApiResponse({ status: 200, description: 'Returns counts by server with names', type: [ServerCountResponseDto] })
+    @ApiResponse({ status: 200, description: 'Returns counts by server with names' })
     async getCountByServer(): Promise<ServerCountResponse[]> {
         return await this.dataService.countByServerWithNames();
     }
 
     @Get('count-by-server-top-5')
     @ApiOperation({ summary: 'Get top 5 servers by count with names' })
-    @ApiResponse({ status: 200, description: 'Returns top 5 servers by count with names', type: [ServerCountResponseDto] })
+    @ApiResponse({ status: 200, description: 'Returns top 5 servers by count with names' })
     async getCountByServerTop5(): Promise<ServerCountResponse[]> {
         return await this.dataService.getTop5ServersWithNames();
     }
@@ -193,16 +193,3 @@ export class DataController {
     }
 }
 
-class ServerCountResponseDto {
-    @ApiProperty()
-    serverId!: string;
-
-    @ApiProperty()
-    hostname!: string;
-
-    @ApiProperty({ required: false })
-    naming?: string;
-
-    @ApiProperty()
-    count!: number;
-}

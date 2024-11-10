@@ -4,7 +4,7 @@ import uuid
 
 
 # Constant user UUID
-user_uuid = "6767855e-e1e7-499b-b0d6-73e15dc948f9"
+user_uuid = "ff40f63d-bcd1-41f5-8ad0-c51f92390846"
 
 
 # Define the server URL
