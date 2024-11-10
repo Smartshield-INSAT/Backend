@@ -2,6 +2,11 @@ import requests
 import random
 import uuid
 
+
+# Constant user UUID
+user_uuid = "6767855e-e1e7-499b-b0d6-73e15dc948f9"
+
+
 # Define the server URL
 url = "http://192.168.100.92:3000/api/server"
 
@@ -38,13 +43,11 @@ def generate_random_mac_addresses(count=1):
     """Generate a list of random MAC addresses."""
     return [generate_random_mac_address() for _ in range(count)]
 
-# Constant user UUID
-user_uuid = "6767855e-e1e7-499b-b0d6-73e15dc948f9"
 
 ids = []
 
 # Generate and send random server data
-for _ in range(200):
+for _ in range(10):
     data = {
         "userUuid": user_uuid,  # Constant user UUID
         "hostname": generate_random_hostname(),
