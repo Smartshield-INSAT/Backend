@@ -8,7 +8,7 @@ import math
 # url = "http://192.168.100.92:3000/api/data"
 url = "http://localhost:3000/api/data"
 
-servers = ['5b5603c8-e1c2-4389-a350-9bba60dca0a5', 'f68b76d4-b5b1-447d-8f8e-8efbc55ba0e4', '6b9dedc8-3ee8-48f6-b00d-ffe3c9b39cce', '36b4c5f0-077c-4c14-b5a4-c1bfd78d6dbe', '56c3e502-20e3-4bcb-95b4-feb710f49efa', '5c61e92f-b996-4586-903e-2c98ea7ad04f', 'c3a68a6b-28b9-47bb-b482-ebfc8aad8d64', 'f31f79b3-6d2b-4b32-ba2a-713f20a6bab4', '4ec10a7a-d818-48fb-b294-59e8ab331ea2', 'eb5cab6a-71b0-4e94-9fde-7a7536f541dc']
+servers = ['c8567cfb-d450-4c38-b10f-11f92c462717', '1ef72b20-ce2b-49cf-9ce1-6e04fb92ef7d', '67fca7ef-f118-4641-9fce-5ffd7a368a13', '97dc60f0-e55a-4e09-8fcd-4005e4e21452', '2454e745-630f-4104-90f1-cbbef645b5f3', 'a9e9cda4-3fc3-4358-9de2-33a49d3f8cca', '5a4bebb5-1c36-4965-8845-d4b07d460706', 'c5a30a5f-cd88-41ac-bcea-30be77788087', '2fe1465c-bdbe-4e6a-8d0c-2ee78a6a9c40', 'ff6bf2e1-e64f-44a5-a278-f92eaf650314']
 random.seed(random.random())
  
 
